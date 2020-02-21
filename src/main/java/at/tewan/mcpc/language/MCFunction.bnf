@@ -1,0 +1,23 @@
+{
+    parserClass="at.tewan.mcpc.language.parser.MCFunctionParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="MCFunction"
+    psiImplClassSuffix="Impl"
+    psiPackage="at.tewan.mcpc.language.psi"
+    psiImplPackage="at.tewan.mcpc.language.psi.impl"
+
+    elementTypeHolderClass="at.tewan.mcpc.language.psi.MCFunctionTypes"
+    elementTypeClass="at.tewan.mcpc.language.psi.MCFunctionElementType"
+    tokenTypeClass="at.tewan.mcpc.language.psi.MCFunctionTokenType"
+
+    psiImplUtilClass="at.tewan.mcpc.language.psi.impl.MCFunctionPsiImplUtil"
+
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY

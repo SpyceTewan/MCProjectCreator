@@ -1,0 +1,30 @@
+<idea-plugin>
+    <id>at.tewan.mcprojectcreator</id>
+    <name>MCProjectCreator</name>
+    <vendor email="tewan@spycesoftware.com" url="http://www.tewan.at/mcprojectcreator">Tewan</vendor>
+
+    <description><![CDATA[
+    Adds Minecraft Datapack and Resourcepack file formats, project structure and visual editors
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.json</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileType name="MCFunction"
+                  implementationClass="at.tewan.mcpc.language.MCFunctionFileType"
+                  fieldName="INSTANCE"
+                  language="mcfunction" extensions="mcfunction"/>
+        <!--
+        <lang.parserDefinition language="mcfunction"
+                               implementationClass="at.tewan.mcpc.language.MCFunctionParserDefinition"/>-->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
