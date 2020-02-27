@@ -30,6 +30,9 @@ intellij {
     version '2019.3.3'
     pluginName 'MCProjectCreator'
 }
+
+intellij.plugins 'java'
+
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
