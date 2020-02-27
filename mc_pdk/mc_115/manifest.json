@@ -1,0 +1,10 @@
+{
+	"name": "Minecraft PDK 1.15",
+	"version": {
+		"id": "115",
+		"branch": "release",
+		"label": "1.15",
+		"pdk": "1"
+	},
+	"author": "Tewan"
+}

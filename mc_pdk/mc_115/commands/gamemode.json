@@ -1,0 +1,17 @@
+{
+	"name": "gamemode",
+	"children": [
+		{
+			"type": "enum",
+			"promt": "gamemode",
+			"value": "(adventure|creative|survival|spectator)",
+			"children": [
+				{
+					"type": "selector",
+					"value": "players",
+					"optional": true
+				}
+			]
+		}
+	]
+}
