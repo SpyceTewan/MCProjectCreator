@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MCFunctionCommand extends PsiElement {
-
-  @NotNull
-  List<MCFunctionArg> getArgList();
+public interface MCFunctionTarget extends PsiElement {
 
 }

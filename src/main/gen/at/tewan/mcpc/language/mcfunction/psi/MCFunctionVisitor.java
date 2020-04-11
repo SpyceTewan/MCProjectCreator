@@ -7,7 +7,15 @@ import com.intellij.psi.PsiElement;
 
 public class MCFunctionVisitor extends PsiElementVisitor {
 
+  public void visitArg(@NotNull MCFunctionArg o) {
+    visitPsiElement(o);
+  }
+
   public void visitCommand(@NotNull MCFunctionCommand o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTarget(@NotNull MCFunctionTarget o) {
     visitPsiElement(o);
   }
 

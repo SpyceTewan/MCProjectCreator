@@ -3,7 +3,6 @@
 package at.tewan.mcpc.language.mcfunction;
 
 import at.tewan.mcpc.language.mcfunction.psi.MCFunctionTypes;
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
 
@@ -23,8 +22,8 @@ class MCFunctionLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
-  public static final int WAITING_ARG = 2;
-  public static final int WAITING_ARG_SEPARATOR = 4;
+  public static final int WAIT_COMMAND_ARG = 2;
+  public static final int WAIT_COMMAND_ARG_SEPARATOR = 4;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -55,8 +54,7 @@ class MCFunctionLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\3\1\2\2\1\1\2\22\0\1\4\2\10\1\5\6\0\1\10\1\0\1\10\1\0\1\10\1\0\13"+
-    "\10\2\0\1\10\2\0\1\7\36\0\1\10\1\0\32\6\1\10\1\0\1\10\7\0\1\1\242\0\2\1\26"+
+    "\11\0\1\5\1\2\1\1\1\6\1\3\22\0\1\4\2\0\1\7\75\0\32\10\12\0\1\1\242\0\2\1\26"+
     "\0");
 
   /** 
@@ -65,11 +63,10 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\1\1\1\2\1\3\1\4\1\5\1\1\1\6"+
-    "\2\7";
+    "\4\0\1\1\1\2\1\3\1\4\2\5\1\6\1\7";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[13];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -95,10 +92,10 @@ class MCFunctionLexer implements FlexLexer {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\11\0\22\0\33\0\44\0\55\0\66\0\77"+
-    "\0\110\0\121\0\132\0\143\0\44";
+    "\0\110\0\121\0\132\0\143";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[13];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -121,11 +118,11 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\5\4\6\5\5\4\6\1\7\1\10\3\5\4\6"+
-    "\1\5\1\11\1\12\2\5\3\6\1\13\4\5\12\0"+
-    "\4\6\4\0\2\7\1\0\6\7\6\0\1\10\10\0"+
-    "\1\11\2\0\1\14\2\0\6\14\1\0\3\6\1\13"+
-    "\10\0\3\15\1\0\1\15";
+    "\1\5\6\6\1\5\1\7\1\5\6\6\1\10\1\7"+
+    "\1\5\2\11\1\12\2\5\1\11\1\5\1\13\4\5"+
+    "\1\14\4\5\12\0\6\6\12\0\1\7\2\10\2\0"+
+    "\5\10\4\0\3\11\4\0\1\11\1\0\3\11\12\0"+
+    "\1\13\4\0\1\14\4\0";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[108];
@@ -166,10 +163,10 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\4\0\1\11\7\1\1\11";
+    "\4\0\1\11\7\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[13];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -521,32 +518,32 @@ class MCFunctionLexer implements FlexLexer {
             // fall through
           case 8: break;
           case 2: 
-            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
+            { return MCFunctionTypes.WHITE_SPACE;
             } 
             // fall through
           case 9: break;
           case 3: 
-            { yybegin(YYINITIAL); return MCFunctionTypes.COMMENT;
+            { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_NAME;
             } 
             // fall through
           case 10: break;
           case 4: 
-            { yybegin(WAITING_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_NAME;
+            { return MCFunctionTypes.COMMENT;
             } 
             // fall through
           case 11: break;
           case 5: 
-            { yybegin(WAITING_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_ARGUMENT;
+            { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END;
             } 
             // fall through
           case 12: break;
           case 6: 
-            { yybegin(WAITING_ARG); return TokenType.WHITE_SPACE;
+            { return MCFunctionTypes.COMMAND_ARGUMENT;
             } 
             // fall through
           case 13: break;
           case 7: 
-            { yybegin(WAITING_ARG); return MCFunctionTypes.TARGET_SELECTOR;
+            { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.WHITE_SPACE;
             } 
             // fall through
           case 14: break;

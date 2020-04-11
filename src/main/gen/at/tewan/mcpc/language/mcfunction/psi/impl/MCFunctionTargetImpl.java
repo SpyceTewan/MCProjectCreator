@@ -11,25 +11,19 @@ import static at.tewan.mcpc.language.mcfunction.psi.MCFunctionTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import at.tewan.mcpc.language.mcfunction.psi.*;
 
-public class MCFunctionCommandImpl extends ASTWrapperPsiElement implements MCFunctionCommand {
+public class MCFunctionTargetImpl extends ASTWrapperPsiElement implements MCFunctionTarget {
 
-  public MCFunctionCommandImpl(@NotNull ASTNode node) {
+  public MCFunctionTargetImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MCFunctionVisitor visitor) {
-    visitor.visitCommand(this);
+    visitor.visitTarget(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MCFunctionVisitor) accept((MCFunctionVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<MCFunctionArg> getArgList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MCFunctionArg.class);
   }
 
 }
