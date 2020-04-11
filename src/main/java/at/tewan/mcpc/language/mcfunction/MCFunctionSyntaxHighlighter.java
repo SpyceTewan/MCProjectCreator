@@ -12,15 +12,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 
-	public static final TextAttributesKey COMMAND_NAME = TextAttributesKey.createTextAttributesKey("MCFUNCTION_NAME", DefaultLanguageHighlighterColors.KEYWORD);
-	public static final TextAttributesKey COMMAND_ARG = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMAND_ARG", DefaultLanguageHighlighterColors.PARAMETER);
+	public static final TextAttributesKey COMMAND_NAME = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMAND_NAME", DefaultLanguageHighlighterColors.KEYWORD);
+	public static final TextAttributesKey COMMAND_LITERAL = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMAND_LITERAL", DefaultLanguageHighlighterColors.PARAMETER);
 	public static final TextAttributesKey BAD_CHAR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_BAD_CHAR", HighlighterColors.BAD_CHARACTER);
 	public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-	public static final TextAttributesKey TARGET_SELECTOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_SELECTOR", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+	public static final TextAttributesKey TARGET_SELECTOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_SELECTOR", DefaultLanguageHighlighterColors.IDENTIFIER);
 
 	public static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHAR};
 	public static final TextAttributesKey[] COMMAND_NAME_KEYS = new TextAttributesKey[]{COMMAND_NAME};
-	public static final TextAttributesKey[] COMMAND_ARG_KEYS = new TextAttributesKey[]{COMMAND_ARG};
+	public static final TextAttributesKey[] COMMAND_LITERAL_KEYS = new TextAttributesKey[]{COMMAND_LITERAL};
 	public static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
 	public static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 	public static final TextAttributesKey[] TARGET_SELECTOR_KEYS = new TextAttributesKey[]{TARGET_SELECTOR};
@@ -36,8 +36,8 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
 		if(tokenType.equals(MCFunctionTypes.COMMENT)) {
 			return COMMENT_KEYS;
-		} else if(tokenType.equals(MCFunctionTypes.COMMAND_ARGUMENT)) {
-			return COMMAND_ARG_KEYS;
+		} else if(tokenType.equals(MCFunctionTypes.COMMAND_LITERAL)) {
+			return COMMAND_LITERAL_KEYS;
 		} else if(tokenType.equals(MCFunctionTypes.COMMAND_NAME)) {
 			return COMMAND_NAME_KEYS;
 		} else if(tokenType.equals(TokenType.BAD_CHARACTER)) {

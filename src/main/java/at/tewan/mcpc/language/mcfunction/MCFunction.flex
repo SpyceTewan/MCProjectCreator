@@ -25,19 +25,22 @@ COMMAND_LITERAL = [a-z]+
 TARGET_SELECTOR = @.
 TARGET_BODY_START = \[
 TARGET_BODY_END = \]
-TARGET_ATTR_KEY = [a-z_]
+TARGET_ATTR_KEY = [a-z_]+
 TARGET_ATTR_EQU = =
 TARGET_ATTR_SEPARATOR = ,
 
 %state WAIT_COMMAND_ARG
 %state WAIT_COMMAND_ARG_SEPARATOR
 %state WAIT_TARGET_BODY
+%state WAIT_TARGET_KEY
+%state WAIT_TARGET_EQU
+%state WAIT_TARGET_END
 
 %%
 <YYINITIAL> {
 	{COMMAND_LITERAL}                                       { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_NAME; }
-	({EOL} | {WHITE_SPACE})+							    { return MCFunctionTypes.WHITE_SPACE; }
-    ^{LINE_COMMENT}											{ return MCFunctionTypes.COMMENT; }
+	({EOL} | {WHITE_SPACE})+                                { return MCFunctionTypes.WHITE_SPACE; }
+	^{LINE_COMMENT}                                         { return MCFunctionTypes.COMMENT; }
 }
 <WAIT_COMMAND_ARG_SEPARATOR> {
     {SPACE}+                                                { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.SPACE; }
@@ -45,18 +48,24 @@ TARGET_ATTR_SEPARATOR = ,
 }
 <WAIT_COMMAND_ARG> {
     {EOL}           									    { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END; }
-    {COMMAND_LITERAL}										{ yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_ARGUMENT; }
+    {COMMAND_LITERAL}										{ yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_LITERAL; }
     {TARGET_SELECTOR}                                       { yybegin(WAIT_TARGET_BODY); return MCFunctionTypes.TARGET_SELECTOR; }
 }
-
-//<WAITING_LINE> {LINE_COMMENT}                               { return MCFunctionTypes.COMMENT; }
-
-//<WAITING_LINE> {COMMAND_ARGUMENT}                           { yybegin(WAITING_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_NAME; }
-//
-//<WAITING_ARG> {COMMAND_ARGUMENT}                            { yybegin(WAITING_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_ARGUMENT; }
-//<WAITING_ARG> {TARGET_SELECTOR}                             { yybegin(WAITING_TARGET_START); return MCFunctionTypes.TARGET_SELECTOR; }
-//<WAITING_ARG_SEPARATOR> {SPACE}                             { yybegin(WAITING_ARG); return TokenType.WHITE_SPACE; }
-//<WAITING_TARGET_START> {TARGET_BODY_START}                  { yybegin(WAITING_TARGET_ATT); return MCFunctionTypes.TARGET_BODY_START; }
-//<WAITING_TARGET_START> {SPACE}                              { yybegin(WAITING_ARG); return MCFunctionTypes.WHITE_SPACE; }
-
+<WAIT_TARGET_BODY> {
+    {SPACE}+                                                { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.SPACE; }
+    {SPACE}*{EOL}                                           { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END; }
+    {TARGET_BODY_START}                                     { yybegin(WAIT_TARGET_KEY); return MCFunctionTypes.TARGET_BODY_START; }
+}
+<WAIT_TARGET_KEY> {
+    {SPACE}+                                                { return MCFunctionTypes.SPACE; }
+    {TARGET_ATTR_KEY}                                       { yybegin(WAIT_TARGET_EQU); return MCFunctionTypes.TARGET_ATTR_KEY; }
+}
+<WAIT_TARGET_EQU> {
+	{SPACE}+                                                { return MCFunctionTypes.SPACE; }
+	{TARGET_ATTR_EQU}										{ yybegin(WAIT_TARGET_END); return MCFunctionTypes.TARGET_ATTR_EQU; }
+}
+<WAIT_TARGET_END> {
+	{TARGET_BODY_END}										{ yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.TARGET_BODY_END; }
+	//{TARGET_ATTR_SEPARATOR}									{ yybegin(WAIT_TARGET_KEY); return MCFunctionTypes.TARGET}
+}
 [^]                                                         { return TokenType.BAD_CHARACTER; }

@@ -12,8 +12,8 @@ public interface MCFunctionTypes {
   IElementType COMMAND = new MCFunctionElementType("COMMAND");
   IElementType TARGET = new MCFunctionElementType("TARGET");
 
-  IElementType COMMAND_ARGUMENT = new MCFunctionTokenType("COMMAND_ARGUMENT");
   IElementType COMMAND_END = new MCFunctionTokenType("COMMAND_END");
+  IElementType COMMAND_LITERAL = new MCFunctionTokenType("COMMAND_LITERAL");
   IElementType COMMAND_NAME = new MCFunctionTokenType("COMMAND_NAME");
   IElementType COMMENT = new MCFunctionTokenType("COMMENT");
   IElementType SPACE = new MCFunctionTokenType("SPACE");

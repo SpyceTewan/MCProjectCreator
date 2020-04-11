@@ -36,13 +36,13 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMAND_ARGUMENT | target
+  // COMMAND_LITERAL | target
   public static boolean arg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arg")) return false;
-    if (!nextTokenIs(b, "<arg>", COMMAND_ARGUMENT, TARGET_SELECTOR)) return false;
+    if (!nextTokenIs(b, "<arg>", COMMAND_LITERAL, TARGET_SELECTOR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARG, "<arg>");
-    r = consumeToken(b, COMMAND_ARGUMENT);
+    r = consumeToken(b, COMMAND_LITERAL);
     if (!r) r = target(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -107,7 +107,7 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // TARGET_SELECTOR(TARGET_BODY_START WHITE_SPACE? TARGET_ATTR_KEY WHITE_SPACE? TARGET_ATTR_EQU WHITE_SPACE? TARGET_BODY_END)?
+  // TARGET_SELECTOR(TARGET_BODY_START SPACE* TARGET_ATTR_KEY SPACE* TARGET_ATTR_EQU SPACE* TARGET_BODY_END)?
   public static boolean target(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target")) return false;
     if (!nextTokenIs(b, TARGET_SELECTOR)) return false;
@@ -119,14 +119,14 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (TARGET_BODY_START WHITE_SPACE? TARGET_ATTR_KEY WHITE_SPACE? TARGET_ATTR_EQU WHITE_SPACE? TARGET_BODY_END)?
+  // (TARGET_BODY_START SPACE* TARGET_ATTR_KEY SPACE* TARGET_ATTR_EQU SPACE* TARGET_BODY_END)?
   private static boolean target_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target_1")) return false;
     target_1_0(b, l + 1);
     return true;
   }
 
-  // TARGET_BODY_START WHITE_SPACE? TARGET_ATTR_KEY WHITE_SPACE? TARGET_ATTR_EQU WHITE_SPACE? TARGET_BODY_END
+  // TARGET_BODY_START SPACE* TARGET_ATTR_KEY SPACE* TARGET_ATTR_EQU SPACE* TARGET_BODY_END
   private static boolean target_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target_1_0")) return false;
     boolean r;
@@ -142,24 +142,36 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // WHITE_SPACE?
+  // SPACE*
   private static boolean target_1_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target_1_0_1")) return false;
-    consumeToken(b, WHITE_SPACE);
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SPACE)) break;
+      if (!empty_element_parsed_guard_(b, "target_1_0_1", c)) break;
+    }
     return true;
   }
 
-  // WHITE_SPACE?
+  // SPACE*
   private static boolean target_1_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target_1_0_3")) return false;
-    consumeToken(b, WHITE_SPACE);
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SPACE)) break;
+      if (!empty_element_parsed_guard_(b, "target_1_0_3", c)) break;
+    }
     return true;
   }
 
-  // WHITE_SPACE?
+  // SPACE*
   private static boolean target_1_0_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "target_1_0_5")) return false;
-    consumeToken(b, WHITE_SPACE);
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, SPACE)) break;
+      if (!empty_element_parsed_guard_(b, "target_1_0_5", c)) break;
+    }
     return true;
   }
 
