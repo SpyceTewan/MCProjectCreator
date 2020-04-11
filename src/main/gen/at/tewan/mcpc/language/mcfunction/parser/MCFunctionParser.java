@@ -49,7 +49,7 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMAND_NAME (SPACE arg)* WHITE_SPACE* COMMAND_END
+  // COMMAND_NAME (SPACE arg)* COMMAND_END
   public static boolean command(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "command")) return false;
     if (!nextTokenIs(b, COMMAND_NAME)) return false;
@@ -57,7 +57,6 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMAND_NAME);
     r = r && command_1(b, l + 1);
-    r = r && command_2(b, l + 1);
     r = r && consumeToken(b, COMMAND_END);
     exit_section_(b, m, COMMAND, r);
     return r;
@@ -83,17 +82,6 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     r = r && arg(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // WHITE_SPACE*
-  private static boolean command_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "command_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!consumeToken(b, WHITE_SPACE)) break;
-      if (!empty_element_parsed_guard_(b, "command_2", c)) break;
-    }
-    return true;
   }
 
   /* ********************************************************** */

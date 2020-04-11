@@ -5,6 +5,7 @@ package at.tewan.mcpc.language.mcfunction;
 import at.tewan.mcpc.language.mcfunction.psi.MCFunctionTypes;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
+import com.intellij.lexer.FlexLexer;
 
 
 /**
@@ -54,8 +55,7 @@ class MCFunctionLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\5\1\2\1\1\1\6\1\3\22\0\1\4\2\0\1\7\75\0\32\10\12\0\1\1\242\0\2\1\26"+
-    "\0");
+    "\11\0\1\5\1\2\2\1\1\3\22\0\1\4\2\0\1\6\75\0\32\7\12\0\1\1\242\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -63,10 +63,11 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\1\1\1\2\1\3\1\4\2\5\1\6\1\7";
+    "\4\0\1\1\1\2\1\3\1\4\2\5\1\1\1\6"+
+    "\1\7\1\0";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[12];
+    int [] result = new int[14];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -91,11 +92,11 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\11\0\22\0\33\0\44\0\55\0\66\0\77"+
-    "\0\110\0\121\0\132\0\143";
+    "\0\0\0\10\0\20\0\30\0\40\0\50\0\60\0\70"+
+    "\0\40\0\100\0\110\0\120\0\130\0\110";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[12];
+    int [] result = new int[14];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -118,14 +119,14 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\5\6\6\1\5\1\7\1\5\6\6\1\10\1\7"+
-    "\1\5\2\11\1\12\2\5\1\11\1\5\1\13\4\5"+
-    "\1\14\4\5\12\0\6\6\12\0\1\7\2\10\2\0"+
-    "\5\10\4\0\3\11\4\0\1\11\1\0\3\11\12\0"+
-    "\1\13\4\0\1\14\4\0";
+    "\1\5\5\6\1\5\1\7\1\5\5\6\1\10\1\7"+
+    "\1\5\2\11\1\12\1\13\2\5\1\14\1\5\2\11"+
+    "\1\12\1\15\3\5\11\0\5\6\11\0\1\7\2\10"+
+    "\2\0\4\10\2\0\1\11\6\0\2\11\1\12\1\16"+
+    "\12\0\1\14\1\0\2\11\1\12\1\15\3\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[108];
+    int [] result = new int[96];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -163,10 +164,10 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\4\0\1\11\7\1";
+    "\4\0\1\11\3\1\1\11\4\1\1\0";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[12];
+    int [] result = new int[14];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -538,12 +539,12 @@ class MCFunctionLexer implements FlexLexer {
             // fall through
           case 12: break;
           case 6: 
-            { return MCFunctionTypes.COMMAND_ARGUMENT;
+            { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_ARGUMENT;
             } 
             // fall through
           case 13: break;
           case 7: 
-            { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.WHITE_SPACE;
+            { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.SPACE;
             } 
             // fall through
           case 14: break;

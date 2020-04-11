@@ -12,16 +12,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 
-	public static final TextAttributesKey COMMAND_NAME = TextAttributesKey.createTextAttributesKey("MCFUNCTION_NAME", DefaultLanguageHighlighterColors.CONSTANT);
-	public static final TextAttributesKey COMMAND_ARG = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMAND_ARG", DefaultLanguageHighlighterColors.KEYWORD);
+	public static final TextAttributesKey COMMAND_NAME = TextAttributesKey.createTextAttributesKey("MCFUNCTION_NAME", DefaultLanguageHighlighterColors.KEYWORD);
+	public static final TextAttributesKey COMMAND_ARG = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMAND_ARG", DefaultLanguageHighlighterColors.PARAMETER);
 	public static final TextAttributesKey BAD_CHAR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_BAD_CHAR", HighlighterColors.BAD_CHARACTER);
 	public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+	public static final TextAttributesKey TARGET_SELECTOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_SELECTOR", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
 
 	public static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHAR};
 	public static final TextAttributesKey[] COMMAND_NAME_KEYS = new TextAttributesKey[]{COMMAND_NAME};
 	public static final TextAttributesKey[] COMMAND_ARG_KEYS = new TextAttributesKey[]{COMMAND_ARG};
 	public static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
 	public static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+	public static final TextAttributesKey[] TARGET_SELECTOR_KEYS = new TextAttributesKey[]{TARGET_SELECTOR};
 
 	@NotNull
 	@Override
@@ -40,6 +42,8 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 			return COMMAND_NAME_KEYS;
 		} else if(tokenType.equals(TokenType.BAD_CHARACTER)) {
 			return BAD_CHAR_KEYS;
+		} else if(tokenType.equals(MCFunctionTypes.TARGET_SELECTOR)) {
+			return TARGET_SELECTOR_KEYS;
 		} else {
 			return EMPTY_KEYS;
 		}

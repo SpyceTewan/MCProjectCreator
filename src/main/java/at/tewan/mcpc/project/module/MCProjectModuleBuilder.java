@@ -14,7 +14,9 @@ import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.impl.ModuleRootManagerImpl;
 import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jdom.JDOMException;
@@ -37,23 +39,38 @@ public class MCProjectModuleBuilder extends ModuleBuilder implements SourcePaths
 	private List<Pair<String, String>> sourcePaths;
 
 	@Override
-	public void setupRootModel(@NotNull ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+	public void setupRootModel(@NotNull ModifiableRootModel rootModel) throws ConfigurationException {
 
-		final ContentEntry contentEntry = doAddContentEntry(modifiableRootModel);
+		final ContentEntry contentEntry = doAddContentEntry(rootModel);
 		if(contentEntry == null) return;
 
-		final File dataFile = new File(getContentEntryPath(), "data");
-		final File resourcesFile = new File(getContentEntryPath(), "resources");
-		dataFile.mkdirs();
-		resourcesFile.mkdirs();
-
-		final VirtualFile dataRoot = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(dataFile);
-		final VirtualFile resourcesRoot = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(resourcesFile);
+		final VirtualFile dataRoot = getSourceRoot(getContentEntryPath(), "data");
+		final VirtualFile resourcesRoot = getSourceRoot(getContentEntryPath(), "resources");
 
 		if(dataRoot == null || resourcesRoot == null) return;
 
 		contentEntry.addSourceFolder(dataRoot, JavaSourceRootType.SOURCE);
 		contentEntry.addSourceFolder(resourcesRoot, JavaResourceRootType.RESOURCE);
+
+		setupMinecraftModule(rootModel);
+	}
+
+	private VirtualFile getSourceRoot(String contentEntryPath, String name) {
+		final File file = new File(contentEntryPath, name);
+		file.mkdirs();
+		return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
+	}
+
+	private void setupMinecraftModule(ModifiableRootModel rootModel) {
+		final String parentContentEntry = new File(getContentEntryPath()).getParent();
+		final File minecraftModulePath = new File(parentContentEntry, MINECRAFT_NAMESPACE + File.separator + MINECRAFT_NAMESPACE + ".iml");
+		FileUtil.createIfDoesntExist(minecraftModulePath);
+		Module minecraftModule = ModuleManager.getInstance(rootModel.getProject()).newModule(minecraftModulePath.toString(), MCProjectModuleType.getInstance().getId());
+
+		ModifiableRootModel minecraftRootModel = ModuleRootManagerImpl.getInstance(minecraftModule).getModifiableModel();
+		ContentEntry minecraftContentEntry = doAddContentEntry(minecraftRootModel);
+		minecraftContentEntry.addSourceFolder(getSourceRoot(parentContentEntry, "data"), JavaSourceRootType.SOURCE);
+
 	}
 
 	@Override

@@ -14,6 +14,12 @@ import java.io.IOException;
 
 public class PdkType extends SdkType {
 
+	public static final String MANIFEST_FILE_NAME = "manifest.json";
+	public static final String MINECRAFT = "minecraft";
+	public static final String REGISTRIES_FILE_NAME = "registries.json";
+	public static final String BLOCKS_FILE_NAME = "blocks.json";
+	public static final String COMMANDS_FILE_NAME = "commands.json";
+
 	public PdkType() {
 		super("MC_PDK");
 	}
@@ -82,6 +88,47 @@ public class PdkType extends SdkType {
 	}
 
 	private File getManifest(String sdkHome) {
-		return new File(sdkHome, "manifest.json");
+		return new File(sdkHome, MANIFEST_FILE_NAME);
 	}
+
+	private File getNamespaceContent(String sdkHome, String namespace) {
+		return new File(sdkHome, namespace);
+	}
+
+	private File getBlocks(String sdkHome, String namespace) {
+		return new File(getNamespaceContent(sdkHome, namespace), BLOCKS_FILE_NAME);
+	}
+
+	private File getRegistries(String sdkHome, String namespace) {
+		return new File(getNamespaceContent(sdkHome, namespace), REGISTRIES_FILE_NAME);
+	}
+
+	private File getCommands(String sdkHome, String namespace) {
+		return new File(getNamespaceContent(sdkHome, namespace), COMMANDS_FILE_NAME);
+	}
+
+	/**
+	 * @param sdkHome The home of the pdk
+	 * @return Returns all the namespaces in the pdk (All subdirectories)
+	 */
+	private File[] getNamespaces(String sdkHome) {
+		return new File(sdkHome).listFiles(File::isDirectory);
+	}
+
+	private File getMinecraftContent(String sdkHome) {
+		return getNamespaceContent(sdkHome, MINECRAFT);
+	}
+
+	private File getMinecraftBlocks(String sdkHome) {
+		return getBlocks(sdkHome, MINECRAFT);
+	}
+
+	private File getMinecraftRegistries(String sdkHome) {
+		return getRegistries(sdkHome, MINECRAFT);
+
+	}
+	private File getMinecraftCommands(String sdkHome) {
+		return getCommands(sdkHome, MINECRAFT);
+	}
+
 }
