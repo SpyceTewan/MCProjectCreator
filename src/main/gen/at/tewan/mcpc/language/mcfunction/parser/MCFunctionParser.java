@@ -36,15 +36,43 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COMMAND_LITERAL | target
+  // LITERAL (RES_SEPARATOR RES_ID_NAME)? | target
   public static boolean arg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arg")) return false;
-    if (!nextTokenIs(b, "<arg>", COMMAND_LITERAL, TARGET_SELECTOR)) return false;
+    if (!nextTokenIs(b, "<arg>", LITERAL, TARGET_SELECTOR)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARG, "<arg>");
-    r = consumeToken(b, COMMAND_LITERAL);
+    r = arg_0(b, l + 1);
     if (!r) r = target(b, l + 1);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LITERAL (RES_SEPARATOR RES_ID_NAME)?
+  private static boolean arg_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arg_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LITERAL);
+    r = r && arg_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (RES_SEPARATOR RES_ID_NAME)?
+  private static boolean arg_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arg_0_1")) return false;
+    arg_0_1_0(b, l + 1);
+    return true;
+  }
+
+  // RES_SEPARATOR RES_ID_NAME
+  private static boolean arg_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arg_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, RES_SEPARATOR, RES_ID_NAME);
+    exit_section_(b, m, null, r);
     return r;
   }
 
