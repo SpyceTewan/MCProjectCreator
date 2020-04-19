@@ -27,6 +27,7 @@
                                implementationClass="at.tewan.mcpc.language.mcfunction.MCFunctionParserDefinition"/>
         <lang.syntaxHighlighterFactory language="mcfunction"
                                        implementationClass="at.tewan.mcpc.language.mcfunction.highlighter.MCFunctionSyntaxHighlighterFactory"/>
+        <lang.commenter language="mcfunction" implementationClass="at.tewan.mcpc.language.mcfunction.MCFunctionCommenter"/>
         <colorSettingsPage implementation="at.tewan.mcpc.language.mcfunction.highlighter.MCFunctionColorSettingsPage"/>
         <moduleType id="MCPC_MODULE_TYPE" implementationClass="at.tewan.mcpc.project.module.MCProjectModuleType"/>
         <moduleBuilder id="MCPC_MODULE" builderClass="at.tewan.mcpc.project.module.MCProjectModuleBuilder"/>

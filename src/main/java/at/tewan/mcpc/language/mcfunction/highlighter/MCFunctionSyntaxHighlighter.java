@@ -18,8 +18,10 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("MCFUNCTION_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 	public static final TextAttributesKey BAD_CHAR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_BAD_CHAR", HighlighterColors.BAD_CHARACTER);
 	public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("MCFUNCTION_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-	public static final TextAttributesKey TARGET_SELECTOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_SELECTOR", DefaultLanguageHighlighterColors.IDENTIFIER);
-	public static final TextAttributesKey RESOURCE_SEPARATOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_RESOURCE_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+	public static final TextAttributesKey TARGET_SELECTOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_SELECTOR", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+	public static final TextAttributesKey TARGET_BRACKETS = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
+	public static final TextAttributesKey RESOURCE_NAMESPACE = TextAttributesKey.createTextAttributesKey("MCFUNCTION_RESOURCE_NAMESPACE", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+	public static final TextAttributesKey RESOURCE_SEPARATOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_RESOURCE_SEPARATOR", DefaultLanguageHighlighterColors.COMMA);
 
 	public static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHAR};
 	public static final TextAttributesKey[] COMMAND_NAME_KEYS = new TextAttributesKey[]{COMMAND_NAME};
@@ -28,6 +30,7 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
 	public static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 	public static final TextAttributesKey[] TARGET_SELECTOR_KEYS = new TextAttributesKey[]{TARGET_SELECTOR};
+	public static final TextAttributesKey[] TARGET_BRACKETS_KEYS = new TextAttributesKey[]{TARGET_BRACKETS};
 	public static final TextAttributesKey[] RESOURCE_SEPARATOR_KEYS = new TextAttributesKey[]{RESOURCE_SEPARATOR};
 
 	@NotNull
@@ -51,6 +54,8 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 			return BAD_CHAR_KEYS;
 		} else if(tokenType.equals(MCFunctionTypes.TARGET_SELECTOR)) {
 			return TARGET_SELECTOR_KEYS;
+		} else if(tokenType.equals(MCFunctionTypes.TARGET_BODY_START) || tokenType.equals(MCFunctionTypes.TARGET_BODY_END)) {
+			return TARGET_BRACKETS_KEYS;
 		} else if(tokenType.equals(MCFunctionTypes.RES_SEPARATOR)) {
 			return RESOURCE_SEPARATOR_KEYS;
 		} else {
