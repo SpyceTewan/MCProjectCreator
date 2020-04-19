@@ -15,6 +15,18 @@ public class MCFunctionVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitLiteralArg(@NotNull MCFunctionLiteralArg o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNumberArg(@NotNull MCFunctionNumberArg o) {
+    visitPsiElement(o);
+  }
+
+  public void visitResource(@NotNull MCFunctionResource o) {
+    visitPsiElement(o);
+  }
+
   public void visitTarget(@NotNull MCFunctionTarget o) {
     visitPsiElement(o);
   }

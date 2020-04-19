@@ -8,6 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface MCFunctionArg extends PsiElement {
 
   @Nullable
+  MCFunctionLiteralArg getLiteralArg();
+
+  @Nullable
+  MCFunctionNumberArg getNumberArg();
+
+  @Nullable
+  MCFunctionResource getResource();
+
+  @Nullable
   MCFunctionTarget getTarget();
 
 }

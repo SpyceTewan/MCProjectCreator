@@ -1,4 +1,4 @@
-package at.tewan.mcpc.language.mcfunction;
+package at.tewan.mcpc.language.mcfunction.highlighter;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

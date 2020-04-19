@@ -22,6 +22,7 @@ WHITE_SPACE = [\ \t\f]
 SPACE = [ ]+
 LINE_COMMENT = #[^\r\n]*
 LITERAL = [0-9a-z_\-]+
+NUMBER = [0-9]+(.[0-9]+)?
 RES_ID_NAME = [0-9a-z_\-/.]+
 RES_SEPARATOR = :
 TARGET_SELECTOR = @.
@@ -51,11 +52,12 @@ TARGET_ATTR_SEPARATOR = ,
 }
 <WAIT_LITERAL_SEPARATOR, WAIT_COMMAND_ARG_SEPARATOR> {
     {SPACE}+                                                { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.SPACE; }
-    {SPACE}*{EOL}                                           { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END; }
+	{SPACE}*{EOL}                                           { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END; }
 }
 <WAIT_COMMAND_ARG> {
     {EOL}           									    { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END; }
-    {LITERAL}										        { yybegin(WAIT_LITERAL_SEPARATOR); return MCFunctionTypes.LITERAL; }
+    {NUMBER}												{ yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.NUMBER; }
+	{LITERAL}										        { yybegin(WAIT_LITERAL_SEPARATOR); return MCFunctionTypes.LITERAL; }
     {TARGET_SELECTOR}                                       { yybegin(WAIT_TARGET_BODY); return MCFunctionTypes.TARGET_SELECTOR; }
 }
 
@@ -84,6 +86,7 @@ TARGET_ATTR_SEPARATOR = ,
 // ===============================================
 // RESOURCE IDS
 // ===============================================
+
 <WAIT_RES_ID> {
 	{RES_ID_NAME}											{ yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.RES_ID_NAME; }
 }

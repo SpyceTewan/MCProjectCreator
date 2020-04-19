@@ -10,12 +10,16 @@ public interface MCFunctionTypes {
 
   IElementType ARG = new MCFunctionElementType("ARG");
   IElementType COMMAND = new MCFunctionElementType("COMMAND");
+  IElementType LITERAL_ARG = new MCFunctionElementType("LITERAL_ARG");
+  IElementType NUMBER_ARG = new MCFunctionElementType("NUMBER_ARG");
+  IElementType RESOURCE = new MCFunctionElementType("RESOURCE");
   IElementType TARGET = new MCFunctionElementType("TARGET");
 
   IElementType COMMAND_END = new MCFunctionTokenType("COMMAND_END");
   IElementType COMMAND_NAME = new MCFunctionTokenType("COMMAND_NAME");
   IElementType COMMENT = new MCFunctionTokenType("COMMENT");
   IElementType LITERAL = new MCFunctionTokenType("LITERAL");
+  IElementType NUMBER = new MCFunctionTokenType("NUMBER");
   IElementType RES_ID_NAME = new MCFunctionTokenType("RES_ID_NAME");
   IElementType RES_SEPARATOR = new MCFunctionTokenType("RES_SEPARATOR");
   IElementType SPACE = new MCFunctionTokenType("SPACE");
@@ -34,6 +38,15 @@ public interface MCFunctionTypes {
       }
       else if (type == COMMAND) {
         return new MCFunctionCommandImpl(node);
+      }
+      else if (type == LITERAL_ARG) {
+        return new MCFunctionLiteralArgImpl(node);
+      }
+      else if (type == NUMBER_ARG) {
+        return new MCFunctionNumberArgImpl(node);
+      }
+      else if (type == RESOURCE) {
+        return new MCFunctionResourceImpl(node);
       }
       else if (type == TARGET) {
         return new MCFunctionTargetImpl(node);

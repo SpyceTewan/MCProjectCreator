@@ -20,5 +20,8 @@ mcfunctionFile ::= (command|COMMENT|WHITE_SPACE)*
 
 
 command ::= COMMAND_NAME (SPACE arg)* COMMAND_END
-arg ::= LITERAL (RES_SEPARATOR RES_ID_NAME)? | target
+arg ::= resource | number_arg | literal_arg | target
+literal_arg ::= LITERAL
 target ::= TARGET_SELECTOR(TARGET_BODY_START SPACE* TARGET_ATTR_KEY SPACE* TARGET_ATTR_EQU SPACE* TARGET_BODY_END)?
+resource ::= LITERAL RES_SEPARATOR RES_ID_NAME
+number_arg ::= NUMBER
