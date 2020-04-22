@@ -3,7 +3,7 @@
 package at.tewan.mcpc.language.mcfunction;
 
 import at.tewan.mcpc.language.mcfunction.psi.MCFunctionTypes;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.json.JsonElementType;import com.intellij.json.JsonElementTypes;import com.intellij.psi.impl.source.tree.JavaElementType;import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
 import com.intellij.lexer.FlexLexer;
 
@@ -31,6 +31,16 @@ class MCFunctionLexer implements FlexLexer {
   public static final int WAIT_TARGET_EQU = 12;
   public static final int WAIT_TARGET_END = 14;
   public static final int WAIT_RES_ID = 16;
+  public static final int WAIT_AFTER_SNBT_BLOCK = 18;
+  public static final int WAIT_SNBT_COMP = 20;
+  public static final int WAIT_SNBT_OBJ = 22;
+  public static final int WAIT_SNBT_COMP_CONTENT = 24;
+  public static final int WAIT_SNBT_COMP_KEY = 26;
+  public static final int WAIT_SNBT_COMP_VAL = 28;
+  public static final int WAIT_SNBT_COMP_SEP = 30;
+  public static final int WAIT_SNBT_COMP_AFTERVAL = 32;
+  public static final int WAIT_SNBT_ARR_VAL = 34;
+  public static final int WAIT_SNBT_ARR_SEP = 36;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -40,7 +50,8 @@ class MCFunctionLexer implements FlexLexer {
    */
   private static final int ZZ_LEXSTATE[] = { 
      0,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7,  7,  8,  8, 
-     9, 9
+     9,  9,  3,  3, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 
+    16, 16, 11, 11, 11, 11
   };
 
   /** 
@@ -62,8 +73,10 @@ class MCFunctionLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\5\1\2\2\1\1\3\22\0\1\4\2\0\1\6\11\0\1\7\2\12\12\11\1\13\2\0\1\17\2"+
-    "\0\1\14\32\0\1\15\1\0\1\16\1\0\1\10\1\0\32\10\12\0\1\1\242\0\2\1\26\0");
+    "\11\0\1\5\1\2\2\1\1\3\22\0\1\4\1\0\1\12\1\6\10\0\1\23\1\7\1\33\1\15\12\11"+
+    "\1\16\2\0\1\22\2\0\1\17\21\26\1\14\10\26\1\20\1\13\1\21\1\0\1\10\1\0\1\27"+
+    "\1\30\1\27\1\35\1\27\1\34\5\27\1\32\6\27\1\31\7\27\1\24\1\0\1\25\7\0\1\1\242"+
+    "\0\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -71,12 +84,15 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\12\0\1\1\1\2\1\3\1\4\2\5\1\6\1\7"+
+    "\21\0\1\1\1\2\1\3\1\4\2\5\1\6\1\7"+
     "\1\1\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
-    "\1\17\1\0\1\6\1\20\2\7";
+    "\1\17\1\20\1\21\1\1\1\22\1\23\1\1\1\24"+
+    "\1\1\1\25\1\0\1\6\1\26\1\0\1\27\1\0"+
+    "\1\30\1\31\1\32\2\0\1\33\1\0\2\7\1\0"+
+    "\1\34\1\35";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[32];
+    int [] result = new int[61];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -101,13 +117,17 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\20\0\40\0\60\0\100\0\120\0\140\0\160"+
-    "\0\200\0\220\0\240\0\260\0\300\0\320\0\240\0\340"+
-    "\0\360\0\u0100\0\u0110\0\u0120\0\240\0\240\0\u0130\0\u0140"+
-    "\0\240\0\240\0\u0150\0\u0160\0\u0170\0\240\0\u0160\0\u0170";
+    "\0\0\0\36\0\74\0\132\0\170\0\226\0\264\0\322"+
+    "\0\360\0\u010e\0\u012c\0\u014a\0\u0168\0\u0186\0\u01a4\0\u01c2"+
+    "\0\u01e0\0\u01fe\0\u021c\0\u023a\0\u0258\0\u01fe\0\u0276\0\u0294"+
+    "\0\u02b2\0\u02d0\0\u01fe\0\u02ee\0\u01fe\0\u01fe\0\u030c\0\u032a"+
+    "\0\u01fe\0\u01fe\0\u0348\0\u0366\0\u0384\0\u01fe\0\u01fe\0\u03a2"+
+    "\0\u03c0\0\u03de\0\u01fe\0\u03fc\0\u041a\0\u01fe\0\u0384\0\u01fe"+
+    "\0\u0438\0\u01fe\0\u01fe\0\u01fe\0\u0456\0\u03de\0\u01fe\0\u0474"+
+    "\0\u03fc\0\u041a\0\u0492\0\u01fe\0\u01fe";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[32];
+    int [] result = new int[61];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -130,20 +150,35 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\13\5\14\1\13\3\15\7\13\5\14\1\16\3\15"+
-    "\7\13\2\17\1\20\3\13\2\21\1\22\2\13\1\23"+
-    "\4\13\2\17\1\20\1\24\14\13\2\17\1\20\1\24"+
-    "\6\13\1\25\5\13\2\17\1\20\1\24\10\13\1\26"+
-    "\6\13\1\27\3\13\1\30\13\13\1\27\12\13\1\31"+
-    "\16\13\1\32\10\13\4\33\5\13\21\0\5\14\21\0"+
-    "\3\15\6\0\2\16\2\0\14\16\2\0\1\17\24\0"+
-    "\3\21\6\0\1\34\3\0\3\34\2\35\1\22\6\34"+
-    "\1\36\3\0\14\36\1\0\2\17\1\20\1\24\17\0"+
-    "\1\27\23\0\1\30\16\0\4\33\16\0\1\37\15\0"+
-    "\2\21\1\40\6\0";
+    "\1\22\5\23\1\22\3\24\15\22\4\24\1\22\2\24"+
+    "\1\22\5\23\1\25\3\24\15\22\4\24\1\22\2\24"+
+    "\1\22\2\26\1\27\3\22\2\30\1\31\5\22\1\32"+
+    "\4\22\1\33\2\22\4\30\1\22\2\30\1\22\2\26"+
+    "\1\27\1\34\32\22\2\26\1\27\1\34\11\22\1\35"+
+    "\20\22\2\26\1\27\1\34\13\22\1\36\21\22\1\37"+
+    "\3\22\1\40\16\22\4\40\1\22\2\40\4\22\1\37"+
+    "\15\22\1\41\34\22\1\42\23\22\3\43\3\22\1\43"+
+    "\11\22\7\43\24\22\1\33\53\22\1\44\5\22\1\45"+
+    "\1\22\1\44\6\22\1\46\1\22\1\47\5\44\1\22"+
+    "\2\44\4\22\1\44\5\22\1\45\1\22\1\44\11\22"+
+    "\5\44\1\22\2\44\7\22\1\50\1\22\1\51\1\52"+
+    "\11\22\1\33\27\22\1\53\42\22\1\46\1\22\1\47"+
+    "\10\22\37\0\5\23\37\0\3\24\15\0\4\24\1\0"+
+    "\2\24\2\25\2\0\32\25\2\0\1\26\42\0\3\30"+
+    "\15\0\4\30\1\0\2\30\1\54\3\0\3\54\2\55"+
+    "\1\31\15\54\4\55\1\54\2\55\1\56\3\0\32\56"+
+    "\1\0\2\26\1\27\1\34\35\0\1\37\41\0\1\40"+
+    "\16\0\4\40\1\0\2\40\7\0\3\43\3\0\1\43"+
+    "\11\0\7\43\4\0\1\44\7\0\1\44\11\0\5\44"+
+    "\1\0\2\44\12\57\1\60\1\61\1\0\21\57\11\0"+
+    "\1\51\35\0\1\51\16\0\1\62\1\63\1\64\1\65"+
+    "\2\0\12\66\1\67\1\70\1\0\21\66\11\0\1\71"+
+    "\33\0\2\30\1\72\15\0\4\30\1\0\2\30\1\57"+
+    "\3\0\32\57\11\0\1\73\24\0\1\66\3\0\32\66"+
+    "\11\0\1\73\22\0\1\74\1\75";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[384];
+    int [] result = new int[1200];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -181,11 +216,13 @@ class MCFunctionLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\12\0\1\11\3\1\1\11\5\1\2\11\2\1\2\11"+
-    "\1\1\1\0\1\1\1\11\2\1";
+    "\21\0\1\11\3\1\1\11\4\1\1\11\1\1\2\11"+
+    "\2\1\2\11\3\1\2\11\3\1\1\11\1\0\1\1"+
+    "\1\11\1\0\1\11\1\0\3\11\2\0\1\11\1\0"+
+    "\2\1\1\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[32];
+    int [] result = new int[61];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -239,6 +276,23 @@ class MCFunctionLexer implements FlexLexer {
 
   /** denotes if the user-EOF-code has already been executed */
   private boolean zzEOFDone;
+
+  /* user code: */
+	// This is the code to push and pop on the stack of the current snbt object depth.
+	// If a compound ends on the top layer, the snbt block ends and the command arg is complete
+	int snbtDepth = 0;
+
+	private void pushSnbtDepth() {
+		snbtDepth++;
+	}
+
+	private void popSnbtDepth() {
+  	    snbtDepth--;
+	}
+
+	private boolean isSnbtTopLayer() {
+		return snbtDepth <= 0;
+	}
 
 
   /**
@@ -535,82 +589,151 @@ class MCFunctionLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 17: break;
+          case 30: break;
           case 2: 
             { return MCFunctionTypes.WHITE_SPACE;
             } 
             // fall through
-          case 18: break;
+          case 31: break;
           case 3: 
             { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.COMMAND_NAME;
             } 
             // fall through
-          case 19: break;
+          case 32: break;
           case 4: 
             { return MCFunctionTypes.COMMENT;
             } 
             // fall through
-          case 20: break;
+          case 33: break;
           case 5: 
             { yybegin(YYINITIAL); return MCFunctionTypes.COMMAND_END;
             } 
             // fall through
-          case 21: break;
+          case 34: break;
           case 6: 
             { yybegin(WAIT_LITERAL_SEPARATOR); return MCFunctionTypes.LITERAL;
             } 
             // fall through
-          case 22: break;
+          case 35: break;
           case 7: 
             { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.NUMBER;
             } 
             // fall through
-          case 23: break;
+          case 36: break;
           case 8: 
+            { yybegin(WAIT_SNBT_COMP_CONTENT); pushSnbtDepth(); return MCFunctionTypes.SNBT_COMP_START;
+            } 
+            // fall through
+          case 37: break;
+          case 9: 
             { yybegin(WAIT_COMMAND_ARG); return MCFunctionTypes.SPACE;
             } 
             // fall through
-          case 24: break;
-          case 9: 
+          case 38: break;
+          case 10: 
             { yybegin(WAIT_RES_ID); return MCFunctionTypes.RES_SEPARATOR;
             } 
             // fall through
-          case 25: break;
-          case 10: 
+          case 39: break;
+          case 11: 
             { yybegin(WAIT_TARGET_KEY); return MCFunctionTypes.TARGET_BODY_START;
             } 
             // fall through
-          case 26: break;
-          case 11: 
+          case 40: break;
+          case 12: 
             { return MCFunctionTypes.SPACE;
             } 
             // fall through
-          case 27: break;
-          case 12: 
+          case 41: break;
+          case 13: 
             { yybegin(WAIT_TARGET_EQU); return MCFunctionTypes.TARGET_ATTR_KEY;
             } 
             // fall through
-          case 28: break;
-          case 13: 
+          case 42: break;
+          case 14: 
             { yybegin(WAIT_TARGET_END); return MCFunctionTypes.TARGET_ATTR_EQU;
             } 
             // fall through
-          case 29: break;
-          case 14: 
+          case 43: break;
+          case 15: 
             { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.TARGET_BODY_END;
             } 
             // fall through
-          case 30: break;
-          case 15: 
+          case 44: break;
+          case 16: 
             { yybegin(WAIT_COMMAND_ARG_SEPARATOR); return MCFunctionTypes.RES_ID_NAME;
             } 
             // fall through
-          case 31: break;
-          case 16: 
+          case 45: break;
+          case 17: 
+            { yybegin(WAIT_SNBT_COMP_SEP); return MCFunctionTypes.SNBT_KEY;
+            } 
+            // fall through
+          case 46: break;
+          case 18: 
+            { yybegin(WAIT_SNBT_COMP_KEY); return MCFunctionTypes.SNBT_PARM_SEPARATOR;
+            } 
+            // fall through
+          case 47: break;
+          case 19: 
+            { popSnbtDepth();
+					if(isSnbtTopLayer()) {
+						yybegin(WAIT_AFTER_SNBT_BLOCK);
+					}
+					return MCFunctionTypes.SNBT_COMP_END;
+            } 
+            // fall through
+          case 48: break;
+          case 20: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_INT;
+            } 
+            // fall through
+          case 49: break;
+          case 21: 
+            { yybegin(WAIT_SNBT_COMP_VAL); return MCFunctionTypes.SNBT_SEPARATOR;
+            } 
+            // fall through
+          case 50: break;
+          case 22: 
             { yybegin(WAIT_TARGET_BODY); return MCFunctionTypes.TARGET_SELECTOR;
             } 
             // fall through
-          case 32: break;
+          case 51: break;
+          case 23: 
+            { yybegin(WAIT_SNBT_COMP_SEP); return MCFunctionTypes.STRING;
+            } 
+            // fall through
+          case 52: break;
+          case 24: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_BYTE;
+            } 
+            // fall through
+          case 53: break;
+          case 25: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_SHORT;
+            } 
+            // fall through
+          case 54: break;
+          case 26: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_LONG;
+            } 
+            // fall through
+          case 55: break;
+          case 27: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.STRING;
+            } 
+            // fall through
+          case 56: break;
+          case 28: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_FLOAT;
+            } 
+            // fall through
+          case 57: break;
+          case 29: 
+            { yybegin(WAIT_SNBT_COMP_AFTERVAL); return MCFunctionTypes.SNBT_VAL_DOUBLE;
+            } 
+            // fall through
+          case 58: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

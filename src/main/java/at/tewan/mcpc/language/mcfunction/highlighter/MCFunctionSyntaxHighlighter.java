@@ -22,6 +22,9 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey TARGET_BRACKETS = TextAttributesKey.createTextAttributesKey("MCFUNCTION_TARGET_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
 	public static final TextAttributesKey RESOURCE_NAMESPACE = TextAttributesKey.createTextAttributesKey("MCFUNCTION_RESOURCE_NAMESPACE", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
 	public static final TextAttributesKey RESOURCE_SEPARATOR = TextAttributesKey.createTextAttributesKey("MCFUNCTION_RESOURCE_SEPARATOR", DefaultLanguageHighlighterColors.COMMA);
+	public static final TextAttributesKey SNBT_PRIMITIVE = TextAttributesKey.createTextAttributesKey("MCFUNCTION_SNBT_PRIMITIVE", DefaultLanguageHighlighterColors.NUMBER);
+	public static final TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey("MCFUNCTION_STRING", DefaultLanguageHighlighterColors.STRING);
+
 
 	public static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHAR};
 	public static final TextAttributesKey[] COMMAND_NAME_KEYS = new TextAttributesKey[]{COMMAND_NAME};
@@ -32,6 +35,8 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey[] TARGET_SELECTOR_KEYS = new TextAttributesKey[]{TARGET_SELECTOR};
 	public static final TextAttributesKey[] TARGET_BRACKETS_KEYS = new TextAttributesKey[]{TARGET_BRACKETS};
 	public static final TextAttributesKey[] RESOURCE_SEPARATOR_KEYS = new TextAttributesKey[]{RESOURCE_SEPARATOR};
+	public static final TextAttributesKey[] SNBT_PRIMITIVE_KEYS = new TextAttributesKey[]{SNBT_PRIMITIVE};
+	public static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
 
 	@NotNull
 	@Override
@@ -58,6 +63,15 @@ public class MCFunctionSyntaxHighlighter extends SyntaxHighlighterBase {
 			return TARGET_BRACKETS_KEYS;
 		} else if(tokenType.equals(MCFunctionTypes.RES_SEPARATOR)) {
 			return RESOURCE_SEPARATOR_KEYS;
+		} else if(tokenType.equals(MCFunctionTypes.STRING)) {
+			return STRING_KEYS;
+		} else if(tokenType.equals(MCFunctionTypes.SNBT_VAL_BYTE) |
+				tokenType.equals(MCFunctionTypes.SNBT_VAL_SHORT) |
+				tokenType.equals(MCFunctionTypes.SNBT_VAL_INT) |
+				tokenType.equals(MCFunctionTypes.SNBT_VAL_LONG) |
+				tokenType.equals(MCFunctionTypes.SNBT_VAL_FLOAT) |
+				tokenType.equals(MCFunctionTypes.SNBT_VAL_DOUBLE) ) {
+			return SNBT_PRIMITIVE_KEYS;
 		} else {
 			return EMPTY_KEYS;
 		}

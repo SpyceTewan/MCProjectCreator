@@ -27,6 +27,26 @@ public class MCFunctionVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSnbtArray(@NotNull MCFunctionSnbtArray o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSnbtCompound(@NotNull MCFunctionSnbtCompound o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSnbtCompoundKey(@NotNull MCFunctionSnbtCompoundKey o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSnbtObject(@NotNull MCFunctionSnbtObject o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSnbtValue(@NotNull MCFunctionSnbtValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitTarget(@NotNull MCFunctionTarget o) {
     visitPsiElement(o);
   }

@@ -11,14 +11,14 @@ import static at.tewan.mcpc.language.mcfunction.psi.MCFunctionTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import at.tewan.mcpc.language.mcfunction.psi.*;
 
-public class MCFunctionArgImpl extends ASTWrapperPsiElement implements MCFunctionArg {
+public class MCFunctionSnbtObjectImpl extends ASTWrapperPsiElement implements MCFunctionSnbtObject {
 
-  public MCFunctionArgImpl(@NotNull ASTNode node) {
+  public MCFunctionSnbtObjectImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MCFunctionVisitor visitor) {
-    visitor.visitArg(this);
+    visitor.visitSnbtObject(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,20 +28,8 @@ public class MCFunctionArgImpl extends ASTWrapperPsiElement implements MCFunctio
 
   @Override
   @Nullable
-  public MCFunctionLiteralArg getLiteralArg() {
-    return findChildByClass(MCFunctionLiteralArg.class);
-  }
-
-  @Override
-  @Nullable
-  public MCFunctionNumberArg getNumberArg() {
-    return findChildByClass(MCFunctionNumberArg.class);
-  }
-
-  @Override
-  @Nullable
-  public MCFunctionResource getResource() {
-    return findChildByClass(MCFunctionResource.class);
+  public MCFunctionSnbtArray getSnbtArray() {
+    return findChildByClass(MCFunctionSnbtArray.class);
   }
 
   @Override
@@ -52,8 +40,8 @@ public class MCFunctionArgImpl extends ASTWrapperPsiElement implements MCFunctio
 
   @Override
   @Nullable
-  public MCFunctionTarget getTarget() {
-    return findChildByClass(MCFunctionTarget.class);
+  public MCFunctionSnbtValue getSnbtValue() {
+    return findChildByClass(MCFunctionSnbtValue.class);
   }
 
 }

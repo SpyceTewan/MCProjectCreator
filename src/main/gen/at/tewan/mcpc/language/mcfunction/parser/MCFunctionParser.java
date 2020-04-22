@@ -36,7 +36,7 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // resource | number_arg | literal_arg | target
+  // resource | number_arg | literal_arg | target | snbt_compound
   public static boolean arg(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arg")) return false;
     boolean r;
@@ -45,6 +45,7 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     if (!r) r = number_arg(b, l + 1);
     if (!r) r = literal_arg(b, l + 1);
     if (!r) r = target(b, l + 1);
+    if (!r) r = snbt_compound(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -140,6 +141,128 @@ public class MCFunctionParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, LITERAL, RES_SEPARATOR, RES_ID_NAME);
     exit_section_(b, m, RESOURCE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SNBT_ARR_START snbt_object* SNBT_ARR_END
+  public static boolean snbt_array(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_array")) return false;
+    if (!nextTokenIs(b, SNBT_ARR_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SNBT_ARR_START);
+    r = r && snbt_array_1(b, l + 1);
+    r = r && consumeToken(b, SNBT_ARR_END);
+    exit_section_(b, m, SNBT_ARRAY, r);
+    return r;
+  }
+
+  // snbt_object*
+  private static boolean snbt_array_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_array_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!snbt_object(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "snbt_array_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SNBT_COMP_START (snbt_compound_key SNBT_SEPARATOR snbt_object)* SNBT_COMP_END
+  public static boolean snbt_compound(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_compound")) return false;
+    if (!nextTokenIs(b, SNBT_COMP_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SNBT_COMP_START);
+    r = r && snbt_compound_1(b, l + 1);
+    r = r && consumeToken(b, SNBT_COMP_END);
+    exit_section_(b, m, SNBT_COMPOUND, r);
+    return r;
+  }
+
+  // (snbt_compound_key SNBT_SEPARATOR snbt_object)*
+  private static boolean snbt_compound_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_compound_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!snbt_compound_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "snbt_compound_1", c)) break;
+    }
+    return true;
+  }
+
+  // snbt_compound_key SNBT_SEPARATOR snbt_object
+  private static boolean snbt_compound_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_compound_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = snbt_compound_key(b, l + 1);
+    r = r && consumeToken(b, SNBT_SEPARATOR);
+    r = r && snbt_object(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // STRING | SNBT_KEY
+  public static boolean snbt_compound_key(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_compound_key")) return false;
+    if (!nextTokenIs(b, "<snbt compound key>", SNBT_KEY, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SNBT_COMPOUND_KEY, "<snbt compound key>");
+    r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, SNBT_KEY);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (snbt_array | snbt_compound | snbt_value) SNBT_PARM_SEPARATOR?
+  public static boolean snbt_object(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_object")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SNBT_OBJECT, "<snbt object>");
+    r = snbt_object_0(b, l + 1);
+    r = r && snbt_object_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // snbt_array | snbt_compound | snbt_value
+  private static boolean snbt_object_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_object_0")) return false;
+    boolean r;
+    r = snbt_array(b, l + 1);
+    if (!r) r = snbt_compound(b, l + 1);
+    if (!r) r = snbt_value(b, l + 1);
+    return r;
+  }
+
+  // SNBT_PARM_SEPARATOR?
+  private static boolean snbt_object_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_object_1")) return false;
+    consumeToken(b, SNBT_PARM_SEPARATOR);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // STRING | LITERAL | SNBT_VAL_BYTE | SNBT_VAL_SHORT | SNBT_VAL_INT | SNBT_VAL_LONG | SNBT_VAL_FLOAT | SNBT_VAL_DOUBLE
+  public static boolean snbt_value(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "snbt_value")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SNBT_VALUE, "<snbt value>");
+    r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, LITERAL);
+    if (!r) r = consumeToken(b, SNBT_VAL_BYTE);
+    if (!r) r = consumeToken(b, SNBT_VAL_SHORT);
+    if (!r) r = consumeToken(b, SNBT_VAL_INT);
+    if (!r) r = consumeToken(b, SNBT_VAL_LONG);
+    if (!r) r = consumeToken(b, SNBT_VAL_FLOAT);
+    if (!r) r = consumeToken(b, SNBT_VAL_DOUBLE);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

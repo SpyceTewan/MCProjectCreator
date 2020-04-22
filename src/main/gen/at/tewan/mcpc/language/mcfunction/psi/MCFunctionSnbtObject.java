@@ -5,21 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MCFunctionArg extends PsiElement {
+public interface MCFunctionSnbtObject extends PsiElement {
 
   @Nullable
-  MCFunctionLiteralArg getLiteralArg();
-
-  @Nullable
-  MCFunctionNumberArg getNumberArg();
-
-  @Nullable
-  MCFunctionResource getResource();
+  MCFunctionSnbtArray getSnbtArray();
 
   @Nullable
   MCFunctionSnbtCompound getSnbtCompound();
 
   @Nullable
-  MCFunctionTarget getTarget();
+  MCFunctionSnbtValue getSnbtValue();
 
 }

@@ -20,8 +20,13 @@ mcfunctionFile ::= (command|COMMENT|WHITE_SPACE)*
 
 
 command ::= COMMAND_NAME (SPACE arg)* COMMAND_END
-arg ::= resource | number_arg | literal_arg | target
+arg ::= resource | number_arg | literal_arg | target | snbt_compound
 literal_arg ::= LITERAL
 target ::= TARGET_SELECTOR(TARGET_BODY_START SPACE* TARGET_ATTR_KEY SPACE* TARGET_ATTR_EQU SPACE* TARGET_BODY_END)?
 resource ::= LITERAL RES_SEPARATOR RES_ID_NAME
 number_arg ::= NUMBER
+snbt_compound ::= SNBT_COMP_START (snbt_compound_key SNBT_SEPARATOR snbt_object)* SNBT_COMP_END;
+snbt_compound_key ::= STRING | SNBT_KEY
+snbt_array ::= SNBT_ARR_START snbt_object* SNBT_ARR_END
+snbt_value ::= STRING | LITERAL | SNBT_VAL_BYTE | SNBT_VAL_SHORT | SNBT_VAL_INT | SNBT_VAL_LONG | SNBT_VAL_FLOAT | SNBT_VAL_DOUBLE
+snbt_object ::= (snbt_array | snbt_compound | snbt_value) SNBT_PARM_SEPARATOR?
